@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="../static/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kebabOS Docs — Custom Apps</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --bg-card: #ffffff;
+      --bg-code: #f0efed;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-muted: #9e9893;
+      --accent: #e8553d;
+      --accent-glow: rgba(232, 85, 61, 0.12);
+      --teal: #2bbaa0;
+      --teal-glow: rgba(43, 186, 160, 0.12);
+      --border: #eae8e4;
+      --border-subtle: #f0efed;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    .dark {
+      --bg: #111110;
+      --bg-card: #1a1918;
+      --bg-code: #141413;
+      --text-primary: #ede9e3;
+      --text-secondary: #9e9893;
+      --text-muted: #6b6560;
+      --accent: #f06d55;
+      --accent-glow: rgba(240, 109, 85, 0.15);
+      --teal: #3dd4b8;
+      --teal-glow: rgba(61, 212, 184, 0.12);
+      --border: #2a2928;
+      --border-subtle: #222120;
+      --code-bg: #0d0d0c;
+      --code-text: #cdd6f4;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 60px;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav.scrolled {
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .nav-brand .kebab-icon { width: 28px; height: 28px; }
+    .nav-brand span {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-github:hover { border-color: var(--text-muted); color: var(--text-primary); }
+
+    main { max-width: 980px; margin: 0 auto; padding: 48px 2rem 80px; }
+
+    .page-head {
+      margin-bottom: 1.6rem;
+      padding: 1.25rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-head::before {
+      content: "";
+      position: absolute;
+      inset: -70px;
+      background: radial-gradient(circle at 18% 12%, var(--teal-glow), transparent 55%);
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      position: relative;
+    }
+    .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4vw, 2.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .lead {
+      margin-top: 0.6rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      position: relative;
+      max-width: 72ch;
+    }
+
+    .content { margin-top: 1.25rem; display: grid; gap: 1rem; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.25rem 1.25rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.65rem;
+    }
+
+    .card p, .card li { color: var(--text-secondary); font-weight: 300; }
+    .card strong { color: var(--text-primary); font-weight: 700; }
+    .card code {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: var(--bg-code);
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid color-mix(in srgb, var(--code-bg) 70%, #ffffff 12%);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .code-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .code-top .lang {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: rgba(205, 214, 244, 0.8);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .copy-btn {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: var(--code-text);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      transition: background 0.2s;
+    }
+
+    .copy-btn:hover { background: rgba(255,255,255,0.14); }
+    .copy-btn.copied { color: var(--teal); }
+
+    pre { margin: 0; padding: 1rem 1rem 1.1rem; overflow-x: auto; }
+    pre code { font-family: var(--font-mono); font-size: 0.82rem; color: var(--code-text); white-space: pre; }
+
+    ol { padding-left: 1.2rem; }
+    li { margin: 0.45rem 0; }
+
+    footer {
+      text-align: center;
+      padding: 2rem 2rem 2.5rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      main { padding: 36px 1.25rem 70px; }
+      nav { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="../index.html" class="nav-brand">
+    <img class="kebab-icon" src="../static/logo_3.png" alt="kebabOS">
+    <span>kebabOS Docs</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="../index.html#docs">Docs</a></li>
+    <li><a href="install.html">Install</a></li>
+    <li><a href="boot.html">Boot</a></li>
+    <li><a href="custom_apps.html">Custom Apps</a></li>
+  </ul>
+
+  <a href="https://github.com/kebab-os" class="nav-github" target="_blank" rel="noopener">
+    <i class="fa-brands fa-github"></i> GitHub
+  </a>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / <a href="../index.html#gui">kebab-gui</a> / Custom Apps
+    </div>
+    <h1>Custom App Quick Start Guide</h1>
+    <p class="lead">
+      <strong>To create a new app, create a folder in <code>applications/</code> (e.g., <code>applications/Notes</code>)
+      and add an <code>app.py</code>.</strong>
+    </p>
+  </header>
+
+  <div class="content">
+    <section class="card" aria-label="Essential structure">
+      <h2>1. The Essential Structure</h2>
+      <p>Every app must have these components to talk to the kebabOS kernel:</p>
+    </section>
+
+    <div class="code-block" aria-label="Python example">
+      <div class="code-top">
+        <span class="lang">python</span>
+        <button class="copy-btn" data-code="import pygame
+
+# Define window defaults
+config = {
+    &quot;width&quot;: 350,
+    &quot;height&quot;: 250
+}
+
+# This runs once when the app is opened
+def init_data():
+    return {&quot;content&quot;: &quot;Type here...&quot;, &quot;color&quot;: (50, 50, 50)}
+
+# This runs when your window is the active (top) one
+def handle_input(event, data):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_BACKSPACE:
+            data[&quot;content&quot;] = data[&quot;content&quot;][:-1]
+        else:
+            data[&quot;content&quot;] += event.unicode
+
+# This runs every frame
+def draw_content(surface, rect, data, is_active):
+    # Use 'rect' to stay inside your window boundaries
+    font = pygame.font.SysFont(&quot;Arial&quot;, 16)
+    text_surf = font.render(data[&quot;content&quot;], True, data[&quot;color&quot;])
+    surface.blit(text_surf, (rect.x + 10, rect.y + 10))">Copy</button>
+      </div>
+      <pre><code>import pygame
+
+# Define window defaults
+config = {
+    "width": 350,
+    "height": 250
+}
+
+# This runs once when the app is opened
+def init_data():
+    return {"content": "Type here...", "color": (50, 50, 50)}
+
+# This runs when your window is the active (top) one
+def handle_input(event, data):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_BACKSPACE:
+            data["content"] = data["content"][:-1]
+        else:
+            data["content"] += event.unicode
+
+# This runs every frame
+def draw_content(surface, rect, data, is_active):
+    # Use 'rect' to stay inside your window boundaries
+    font = pygame.font.SysFont("Arial", 16)
+    text_surf = font.render(data["content"], True, data["color"])
+    surface.blit(text_surf, (rect.x + 10, rect.y + 10))</code></pre>
+    </div>
+
+    <section class="card" aria-label="Pro tips">
+      <h2>2. Pro-Tips for Apps</h2>
+      <ol>
+        <li>Icons: Save a <code>favicon.png</code> in your app folder. The kernel finds it automatically.</li>
+        <li>Clipping: Don’t worry about drawing over the taskbar; the Pygame Surface clipping in the kernel handles that for you.</li>
+        <li>Coordination: Always use <code>rect.x</code> and <code>rect.y</code> as your anchor points so your UI moves when the window is dragged.</li>
+      </ol>
+    </section>
+  </div>
+</main>
+
+<footer>
+  kebabOS Docs — Custom Apps
+</footer>
+
+<script>
+  /* Dark mode */
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+    if (event.matches) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  });
+
+  /* Nav scroll effect */
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) mainNav.classList.add('scrolled');
+    else mainNav.classList.remove('scrolled');
+  });
+
+  /* Copy buttons */
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var code = btn.getAttribute('data-code') || '';
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(code).then(function() {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    });
+  });
+</script>
+</body>
+</html>
