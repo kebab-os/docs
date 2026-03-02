@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="../static/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kebabOS Docs — kebab-gui</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --bg-card: #ffffff;
+      --bg-code: #f0efed;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-muted: #9e9893;
+      --accent: #e8553d;
+      --accent-glow: rgba(232, 85, 61, 0.12);
+      --teal: #2bbaa0;
+      --teal-glow: rgba(43, 186, 160, 0.12);
+      --border: #eae8e4;
+      --border-subtle: #f0efed;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    .dark {
+      --bg: #111110;
+      --bg-card: #1a1918;
+      --bg-code: #141413;
+      --text-primary: #ede9e3;
+      --text-secondary: #9e9893;
+      --text-muted: #6b6560;
+      --accent: #f06d55;
+      --accent-glow: rgba(240, 109, 85, 0.15);
+      --teal: #3dd4b8;
+      --teal-glow: rgba(61, 212, 184, 0.12);
+      --border: #2a2928;
+      --border-subtle: #222120;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 60px;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav.scrolled {
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .nav-brand .kebab-icon { width: 28px; height: 28px; }
+
+    .nav-brand span {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-github:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    /* PAGE */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 2rem 80px;
+    }
+
+    .page-head {
+      margin-bottom: 1.6rem;
+      padding: 1.35rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-head::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle at 20% 10%, var(--teal-glow), transparent 55%);
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      position: relative;
+    }
+
+    .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4vw, 2.7rem);
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      position: relative;
+    }
+
+    .lead {
+      margin-top: 0.6rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      position: relative;
+      max-width: 78ch;
+    }
+
+    .grid {
+      margin-top: 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .doc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      min-height: 170px;
+    }
+
+    .doc-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-muted);
+      box-shadow: var(--shadow-md);
+    }
+
+    .doc-card::after {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle at 20% 20%, var(--accent-glow), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+
+    .doc-card:hover::after { opacity: 1; }
+
+    .doc-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--teal);
+      background: var(--teal-glow);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--teal) 18%, transparent);
+      white-space: nowrap;
+    }
+
+    .doc-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      flex: 0 0 auto;
+    }
+
+    .doc-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doc-card p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doc-card .arrow {
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem 2rem 2.5rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      main { padding: 36px 1.25rem 70px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="../index.html" class="nav-brand">
+    <img class="kebab-icon" src="../static/favicon.png" alt="kebabOS">
+    <span>kebabOS Docs</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="../index.html#docs">Docs</a></li>
+    <li><a href="index.html">kebab-gui</a></li>
+    <li><a href="../index.html#cli">kebab-cli</a></li>
+  </ul>
+
+  <a href="https://github.com/kebab-os" class="nav-github" target="_blank" rel="noopener">
+    <i class="fa-brands fa-github"></i> GitHub
+  </a>
+</nav>
+
+<main>
+  <header class="page-head reveal">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / kebab-gui
+    </div>
+    <h1>kebab-gui docs</h1>
+    <p class="lead">
+      Everything for the GUI version of kebabOS: installation, booting, and building your own apps.
+      (Pages live in <code>kebab-gui/</code>.)
+    </p>
+  </header>
+
+  <section class="grid reveal" aria-label="kebab-gui documentation pages">
+    <a class="doc-card" href="install.html">
+      <div class="doc-card-top">
+        <span class="pill">Guide</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-download"></i></div>
+      </div>
+      <h2>Install</h2>
+      <p>Install kebabOS on Windows, macOS, and Linux with copy-ready commands.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="boot.html">
+      <div class="doc-card-top">
+        <span class="pill">Guide</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-power-off"></i></div>
+      </div>
+      <h2>Boot</h2>
+      <p>Start kebabOS from the project root, plus what to do if boot fails.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="custom_apps.html">
+      <div class="doc-card-top">
+        <span class="pill">Developer</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></div>
+      </div>
+      <h2>Custom Apps</h2>
+      <p>App structure, event handling, drawing rules, and best practices.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+  </section>
+</main>
+
+<footer>
+  kebabOS Docs — kebab-gui
+</footer>
+
+<script>
+  /* Dark mode */
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+    if (event.matches) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  });
+
+  /* Nav scroll effect */
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) mainNav.classList.add('scrolled');
+    else mainNav.classList.remove('scrolled');
+  });
+
+  /* Reveal */
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(function(el) { observer.observe(el); });
+</script>
+</body>
+</html>
