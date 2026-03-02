@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="static/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kebabOS — Docs</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --bg-card: #ffffff;
+      --bg-code: #f0efed;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-muted: #9e9893;
+      --accent: #e8553d;
+      --accent-glow: rgba(232, 85, 61, 0.12);
+      --teal: #2bbaa0;
+      --teal-glow: rgba(43, 186, 160, 0.12);
+      --border: #eae8e4;
+      --border-subtle: #f0efed;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    .dark {
+      --bg: #111110;
+      --bg-card: #1a1918;
+      --bg-code: #141413;
+      --text-primary: #ede9e3;
+      --text-secondary: #9e9893;
+      --text-muted: #6b6560;
+      --accent: #f06d55;
+      --accent-glow: rgba(240, 109, 85, 0.15);
+      --teal: #3dd4b8;
+      --teal-glow: rgba(61, 212, 184, 0.12);
+      --border: #2a2928;
+      --border-subtle: #222120;
+      --code-bg: #0d0d0c;
+      --code-text: #cdd6f4;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav.scrolled {
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .nav-brand .kebab-icon { width: 28px; height: 28px; }
+
+    .nav-brand span {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-github:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* MOBILE NAV OVERLAY */
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 101;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .mobile-nav-overlay.open { display: flex; }
+
+    .mobile-nav-overlay a {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .mobile-nav-overlay a:hover { color: var(--accent); }
+
+    .mobile-nav-close {
+      position: absolute;
+      top: 0; right: 0;
+      height: 60px;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 2rem 80px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--teal);
+      background: var(--teal-glow);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .kebab-logo {
+      width: 92px; height: 92px;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease-out 0.1s both;
+      position: relative;
+    }
+    .kebab-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.6s ease-out 0.2s both;
+    }
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero p {
+      max-width: 640px;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 2.3rem;
+      animation: fadeUp 0.6s ease-out 0.3s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.6s ease-out 0.4s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 12px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(232, 85, 61, 0.3); }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-1px); }
+
+    .btn-tertiary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px dashed var(--border);
+    }
+    .btn-tertiary:hover {
+      color: var(--text-primary);
+      border-color: var(--text-muted);
+      transform: translateY(-1px);
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 90px 2rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    /* DOCS GRID */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .doc-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .doc-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-muted);
+      box-shadow: var(--shadow-md);
+    }
+
+    .doc-card::after {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle at 20% 20%, var(--accent-glow), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .doc-card:hover::after { opacity: 1; }
+
+    .doc-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doc-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--teal);
+      background: var(--teal-glow);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--teal) 18%, transparent);
+    }
+
+    .doc-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      flex: 0 0 auto;
+    }
+
+    .doc-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doc-card p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doc-card .arrow {
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 1.5rem;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--accent); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px);} to { opacity: 1; transform: translateY(0);} }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-github { display: none; }
+      .mobile-menu-btn { display: block; }
+
+      .hero { padding: 100px 1.5rem 70px; }
+      section { padding: 60px 1.5rem; }
+      .hero-actions { flex-direction: column; width: 100%; max-width: 340px; }
+      .btn { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-brand">
+    <img class="kebab-icon" src="static/logo_3.png" alt="kebabOS">
+    <span>kebabOS Docs</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#docs">Docs</a></li>
+    <li><a href="#gui">kebab-gui</a></li>
+    <li><a href="#cli">kebab-cli</a></li>
+  </ul>
+
+  <a href="https://github.com/kebab-os" class="nav-github" target="_blank" rel="noopener">
+    <i class="fa-brands fa-github"></i> GitHub
+  </a>
+
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav-overlay" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <a href="#docs" class="mobile-nav-link">Docs</a>
+  <a href="#gui" class="mobile-nav-link">kebab-gui</a>
+  <a href="#cli" class="mobile-nav-link">kebab-cli</a>
+  <a href="https://github.com/kebab-os" target="_blank" rel="noopener">GitHub</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Documentation hub — updated 2026-03-02
+  </div>
+
+  <div class="kebab-logo">
+    <img src="static/logo_2.png" alt="kebabOS logo">
+  </div>
+
+  <h1>kebab<span class="accent">OS</span> Docs</h1>
+
+  <p>
+    Clean, fast docs for using kebabOS: how to install, boot, and build your own apps.
+    Pick a path: GUI docs or CLI docs.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#docs" class="btn btn-primary"><i class="fa-solid fa-book"></i> Browse Docs</a>
+    <a href="#gui" class="btn btn-secondary"><i class="fa-solid fa-desktop"></i> kebab-gui</a>
+    <a href="#cli" class="btn btn-tertiary"><i class="fa-solid fa-terminal"></i> kebab-cli</a>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section id="docs">
+  <div class="reveal">
+    <p class="section-label">01 / Docs</p>
+    <h2 class="section-title">Start here.</h2>
+    <p class="section-desc">
+      The essentials for getting kebabOS running, and extending it with your own applications.
+    </p>
+  </div>
+
+  <div class="docs-grid reveal" aria-label="Documentation cards">
+    <a class="doc-card" href="kebab-gui/install.html" id="gui">
+      <div class="doc-card-top">
+        <span class="doc-pill">kebab-gui</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-download"></i></div>
+      </div>
+      <h3>Install Guide</h3>
+      <p>Install kebabOS on Windows, macOS, or Linux with clean step-by-step commands.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="kebab-gui/boot.html">
+      <div class="doc-card-top">
+        <span class="doc-pill">kebab-gui</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-power-off"></i></div>
+      </div>
+      <h3>Boot Guide</h3>
+      <p>How to start kebabOS from the project root and where to get help if it fails.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="kebab-gui/custom_apps.html">
+      <div class="doc-card-top">
+        <span class="doc-pill">kebab-gui</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></div>
+      </div>
+      <h3>Custom Apps</h3>
+      <p>Build apps that talk to the kernel: init, input handling, rendering, and pro tips.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="#cli">
+      <div class="doc-card-top">
+        <span class="doc-pill">kebab-cli</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-terminal"></i></div>
+      </div>
+      <h3>CLI Docs (coming soon)</h3>
+      <p>Reserved space for upcoming CLI documentation pages in <code>kebab-cli/</code>.</p>
+      <span class="arrow">Jump <i class="fa-solid fa-arrow-down"></i></span>
+    </a>
+  </div>
+</section>
+
+<!-- CLI placeholder section -->
+<section id="cli">
+  <div class="reveal">
+    <p class="section-label">02 / kebab-cli</p>
+    <h2 class="section-title">CLI docs folder.</h2>
+    <p class="section-desc">
+      This repo will include a <code>kebab-cli/</code> directory for command-line documentation.
+      Add pages later without changing the site layout.
+    </p>
+  </div>
+
+  <div class="docs-grid reveal">
+    <a class="doc-card" href="#" onclick="return false;">
+      <div class="doc-card-top">
+        <span class="doc-pill">placeholder</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></div>
+      </div>
+      <h3>kebab-cli/index.html</h3>
+      <p>Create this later to introduce CLI usage and commands. The layout is ready.</p>
+      <span class="arrow">No link <i class="fa-solid fa-ban"></i></span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>
+    kebabOS Docs — <a href="https://github.com/kebab-os" target="_blank" rel="noopener">kebab-os on GitHub</a>
+  </p>
+</footer>
+
+<script>
+  /* Dark mode */
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+    if (event.matches) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  });
+
+  /* Nav scroll effect */
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) mainNav.classList.add('scrolled');
+    else mainNav.classList.remove('scrolled');
+  });
+
+  /* Mobile menu */
+  var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  var mobileNav = document.getElementById('mobileNav');
+  var mobileNavClose = document.getElementById('mobileNavClose');
+  var mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+  mobileMenuBtn.addEventListener('click', function() { mobileNav.classList.add('open'); });
+  mobileNavClose.addEventListener('click', function() { mobileNav.classList.remove('open'); });
+  mobileNavLinks.forEach(function(link) {
+    link.addEventListener('click', function() { mobileNav.classList.remove('open'); });
+  });
+
+  /* Reveal on scroll */
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(function(el) { observer.observe(el); });
+</script>
+</body>
+</html>
