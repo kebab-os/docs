@@ -323,24 +323,8 @@
 
     <section class="img-card" aria-label="Architecture diagram">
       <div class="img-wrap">
-┌──────────────────────────────────────────────────────┐
-│                   kebab_cli.py                       │
-│                (Main Entry Point)                    │
-└─────────────────────────┬────────────────────────────┘
-                          │
-        ┌─────────────────┴────────────────┐
-        │                                  │
-┌───────▼──────────┐             ┌─────────▼─────────┐
-│ TerminalEmulator │             │  TerminalRenderer │
-│      (Logic)     │             │     (Display)     │
-└───────┬──────────┘             └─────────┬─────────┘
-        │                                  │
-        │          ┌─────────────────────┬─┘
-        │          │                     │
-    ┌───▼──────────▼────┐    ┌───────────▼──┐
-    │  Input/Output     │    │ Settings     │
-    │   Buffers         │    │ Panel        │
-    └───────────────────┘    └──────────────┘
+        <!-- Put the provided image under the 'Architecture Overview' section -->
+        <img src="https://cdn.jsdelivr.net/gh/kebab-os/kebab-cli@main/docs/IMG_5383.jpeg" alt="Kebab-CLI architecture diagram">
       </div>
       <div class="img-caption">
         Diagram: High-level component wiring between <code>kebab_cli.py</code>, the renderer, and core modules.
