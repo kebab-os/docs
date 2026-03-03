@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="../static/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kebabOS Docs — kebab-cli Controls Reference</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --bg-card: #ffffff;
+      --bg-code: #f0efed;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-muted: #9e9893;
+      --accent: #e8553d;
+      --accent-glow: rgba(232, 85, 61, 0.12);
+      --teal: #2bbaa0;
+      --teal-glow: rgba(43, 186, 160, 0.12);
+      --border: #eae8e4;
+      --border-subtle: #f0efed;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    .dark {
+      --bg: #111110;
+      --bg-card: #1a1918;
+      --bg-code: #141413;
+      --text-primary: #ede9e3;
+      --text-secondary: #9e9893;
+      --text-muted: #6b6560;
+      --accent: #f06d55;
+      --accent-glow: rgba(240, 109, 85, 0.15);
+      --teal: #3dd4b8;
+      --teal-glow: rgba(61, 212, 184, 0.12);
+      --border: #2a2928;
+      --border-subtle: #222120;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 60px;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav.scrolled {
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-brand .kebab-icon { width: 28px; height: 28px; }
+    .nav-brand span {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-github:hover { border-color: var(--text-muted); color: var(--text-primary); }
+
+    main { max-width: 1040px; margin: 0 auto; padding: 48px 2rem 80px; }
+
+    .page-head {
+      margin-bottom: 1.6rem;
+      padding: 1.25rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-head::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle at 18% 12%, var(--teal-glow), transparent 55%);
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      position: relative;
+    }
+    .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4vw, 2.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .lead {
+      margin-top: 0.6rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      position: relative;
+      max-width: 86ch;
+    }
+
+    .content { margin-top: 1.1rem; display: grid; gap: 1rem; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.15rem 1.25rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.65rem;
+    }
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      letter-spacing: -0.01em;
+      margin: 0.95rem 0 0.45rem;
+    }
+
+    p, li { color: var(--text-secondary); font-weight: 300; }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: var(--bg-code);
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg-card) 92%, var(--bg) 8%);
+    }
+
+    tbody td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: top;
+      color: var(--text-secondary);
+      font-weight: 300;
+      font-size: 0.95rem;
+    }
+
+    tbody tr:hover td {
+      background: color-mix(in srgb, var(--bg-card) 75%, var(--bg) 25%);
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    kbd {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .mono-block {
+      margin-top: 0.6rem;
+      background: var(--code-bg);
+      border: 1px solid color-mix(in srgb, var(--code-bg) 70%, #ffffff 12%);
+      border-radius: 14px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .mono-block pre { margin: 0; padding: 1rem 1rem 1.1rem; overflow-x: auto; }
+    .mono-block code {
+      background: none; border: 0; padding: 0; border-radius: 0;
+      color: var(--code-text);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      white-space: pre;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 2rem 2.5rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      main { padding: 36px 1.25rem 70px; }
+      nav { padding: 0 1.25rem; }
+      tbody td { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+<nav id="mainNav">
+  <a href="../index.html" class="nav-brand">
+    <img class="kebab-icon" src="../static/logo_3.png" alt="kebabOS">
+    <span>kebabOS Docs</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="../index.html#docs">Docs</a></li>
+    <li><a href="../kebab-gui/index.html">kebab-gui</a></li>
+    <li><a href="index.html">kebab-cli</a></li>
+  </ul>
+
+  <a href="https://github.com/kebab-os" class="nav-github" target="_blank" rel="noopener">
+    <i class="fa-brands fa-github"></i> GitHub
+  </a>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / <a href="index.html">kebab-cli</a> / Controls
+    </div>
+    <h1>Kebab-CLI Controls Reference</h1>
+    <p class="lead">
+      Keyboard and mouse controls for typing, navigation, selection, scrolling, menus, and settings.
+    </p>
+  </header>
+
+  <div class="content">
+    <section class="card">
+      <h2>Keyboard Controls</h2>
+
+      <h3>Text Input</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A-Z, 0-9, symbols</strong></td><td>Type character at cursor position</td></tr>
+            <tr><td><strong>Enter/Return</strong></td><td>Execute current command</td></tr>
+            <tr><td><strong>Backspace/Delete</strong></td><td>Remove character before cursor</td></tr>
+            <tr><td><strong>Tab</strong></td><td>(If implemented) Command completion</td></tr>
+            <tr><td><strong>Shift+Tab</strong></td><td>(If implemented) Backward completion</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Navigation</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Left Arrow</strong></td><td>Move cursor left</td></tr>
+            <tr><td><strong>Right Arrow</strong></td><td>Move cursor right</td></tr>
+            <tr><td><strong>Home</strong></td><td>Move cursor to line start</td></tr>
+            <tr><td><strong>End</strong></td><td>Move cursor to line end</td></tr>
+            <tr><td><strong>Up Arrow</strong></td><td>(If implemented) Previous command</td></tr>
+            <tr><td><strong>Down Arrow</strong></td><td>(If implemented) Next command</td></tr>
+            <tr><td><strong>Page Up</strong></td><td>(If implemented) Scroll up</td></tr>
+            <tr><td><strong>Page Down</strong></td><td>(If implemented) Scroll down</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Selection &amp; Editing</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ctrl+A</strong></td><td>(If implemented) Select all</td></tr>
+            <tr><td><strong>Ctrl+C</strong></td><td>(If implemented) Copy selection</td></tr>
+            <tr><td><strong>Ctrl+V</strong></td><td>(If implemented) Paste</td></tr>
+            <tr><td><strong>Ctrl+X</strong></td><td>(If implemented) Cut</td></tr>
+            <tr><td><strong>Ctrl+Z</strong></td><td>(If implemented) Undo</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Mouse Controls</h2>
+
+      <h3>Position Detection</h3>
+      <p>The application detects mouse position over:</p>
+      <ul style="padding-left:1.2rem;">
+        <li><strong>Output Text</strong>: Any rendered text from previous commands</li>
+        <li><strong>Input Line</strong>: The active input area with prompt and user text</li>
+        <li><strong>Menu Bar</strong>: Menu labels and items</li>
+        <li><strong>Settings Panel</strong>: Sliders and buttons</li>
+      </ul>
+
+      <h3>Click Actions</h3>
+      <p><strong>Left Click</strong></p>
+      <ul style="padding-left:1.2rem;">
+        <li><strong>On Text</strong>: Place cursor at clicked position or start selection</li>
+        <li><strong>On Menu Label</strong>: Open/close menu dropdown</li>
+        <li><strong>On Menu Item</strong>: Execute menu action</li>
+        <li><strong>On Settings Button</strong>: Toggle settings panel</li>
+        <li><strong>On Slider</strong>: Start dragging (only when panel visible)</li>
+        <li><strong>On Close Button</strong>: Close settings panel</li>
+      </ul>
+
+      <h3>Mouse Motion</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Action</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Hover over text</strong></td><td>Cursor changes to text cursor (I-beam)</td></tr>
+            <tr><td><strong>Hover over non-text area</strong></td><td>Cursor changes to pointer cursor</td></tr>
+            <tr><td><strong>Hover over menu label</strong></td><td>Label highlights</td></tr>
+            <tr><td><strong>Hover over menu item</strong></td><td>Item highlights</td></tr>
+            <tr><td><strong>Hold left button + drag</strong></td><td>Create text selection</td></tr>
+            <tr><td><strong>Drag slider</strong></td><td>Adjust corresponding setting value</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Scroll Wheel</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Direction</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Scroll Up (Button 4)</strong></td><td>Scroll output up (or settings if panel open)</td></tr>
+            <tr><td><strong>Scroll Down (Button 5)</strong></td><td>Scroll output down (or settings if panel open)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Menu Controls</h2>
+
+      <h3>Opening Menus</h3>
+      <ol style="padding-left:1.2rem;">
+        <li>Click menu label (File, Edit, View, Window)</li>
+        <li>Dropdown appears showing menu items</li>
+      </ol>
+
+      <h3>Navigating Menus</h3>
+      <ul style="padding-left:1.2rem;">
+        <li>Click a menu item to execute action</li>
+        <li>Click elsewhere to close menu</li>
+        <li>Click same menu label again to close menu</li>
+      </ul>
+
+      <h3>Available Actions</h3>
+      <div class="mono-block">
+        <pre><code>File Menu
+Save          → Saves output to output.txt
+Save As       → Custom filename dialog
+Clear         → Clear all output
+
+Edit Menu
+Copy          → (Not yet implemented)
+Paste         → (Not yet implemented)
+
+View Menu
+Zoom In       → (Not yet implemented)
+Zoom Out      → (Not yet implemented)
+
+Window Menu
+Minimize      → (Not yet implemented)
+Maximize      → (Not yet implemented)</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Settings Panel Controls</h2>
+
+      <h3>Opening Settings Panel</h3>
+      <ol style="padding-left:1.2rem;">
+        <li>Click the <strong>Settings</strong> button (right side of menu bar)</li>
+        <li>Panel slides in from the right side</li>
+      </ol>
+
+      <h3>Adjusting Settings</h3>
+      <ul style="padding-left:1.2rem;">
+        <li><strong>Font Size Slider</strong>: Drag left/right (real-time update)</li>
+        <li><strong>Line Height Slider</strong>: Drag left/right (real-time update)</li>
+        <li><strong>Color Sliders</strong> (if visible): Adjust RGB values with real-time preview</li>
+      </ul>
+
+      <h3>Closing Settings Panel</h3>
+      <ol style="padding-left:1.2rem;">
+        <li>Click the <strong>X</strong> button in top-right corner</li>
+        <li>Or click outside the panel (if implemented)</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Keyboard Shortcuts Summary</h2>
+      <div class="mono-block">
+        <pre><code>Quick Reference:
+═══════════════════════════════════════════════════════════
+Category          | Shortcut              | Function
+═══════════════════════════════════════════════════════════
+Input             | A-Z, 0-9, Symbols     | Type character
+                  | Enter                 | Execute command
+                  | Backspace             | Delete character
+─────────────────────────────────────────────────────────
+Navigation        | ←/→ Arrow             | Move cursor
+                  | Home/End              | Line start/end
+                  | ↑/↓ Arrow             | History (TBD)
+─────────────────────────────────────────────────────────
+Scrolling         | Mouse Wheel ↑/↓       | Scroll output
+                  | Page Up/Down          | Page scroll (TBD)
+─────────────────────────────────────────────────────────
+Mouse             | Left Click            | Position cursor
+                  | Click + Drag          | Select text
+                  | Right Side Button     | Toggle settings
+─────────────────────────────────────────────────────────
+Menu              | Click Label           | Open menu
+                  | Click Item            | Execute action
+═══════════════════════════════════════════════════════════</code></pre>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  kebabOS Docs — kebab-cli Controls Reference
+</footer>
+
+<script>
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+    if (event.matches) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  });
+
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) mainNav.classList.add('scrolled');
+    else mainNav.classList.remove('scrolled');
+  });
+</script>
+</body>
+</html>
