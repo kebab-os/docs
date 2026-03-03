@@ -53,6 +53,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     html { scroll-behavior: smooth; font-size: 16px; }
 
     body {
@@ -66,10 +67,11 @@
 
     ::selection { background: var(--accent); color: #fff; }
 
-    /* NAV */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       padding: 0 2rem;
       height: 60px;
@@ -136,10 +138,7 @@
       transition: all 0.2s;
     }
 
-    .nav-github:hover {
-      border-color: var(--text-muted);
-      color: var(--text-primary);
-    }
+    .nav-github:hover { border-color: var(--text-muted); color: var(--text-primary); }
 
     .mobile-menu-btn {
       display: none;
@@ -151,7 +150,6 @@
       padding: 4px;
     }
 
-    /* MOBILE NAV OVERLAY */
     .mobile-nav-overlay {
       display: none;
       position: fixed;
@@ -163,6 +161,7 @@
       justify-content: center;
       gap: 2rem;
     }
+
     .mobile-nav-overlay.open { display: flex; }
 
     .mobile-nav-overlay a {
@@ -173,11 +172,13 @@
       text-decoration: none;
       transition: color 0.2s;
     }
+
     .mobile-nav-overlay a:hover { color: var(--accent); }
 
     .mobile-nav-close {
       position: absolute;
-      top: 0; right: 0;
+      top: 0;
+      right: 0;
       height: 60px;
       padding: 0 2rem;
       display: flex;
@@ -189,7 +190,6 @@
       cursor: pointer;
     }
 
-    /* HERO */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -204,9 +204,11 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      width: 520px; height: 520px;
+      width: 520px;
+      height: 520px;
       background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
       pointer-events: none;
     }
@@ -226,7 +228,8 @@
     }
 
     .hero-badge .dot {
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--teal);
       animation: pulse-dot 2s ease-in-out infinite;
@@ -235,11 +238,13 @@
     @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
 
     .kebab-logo {
-      width: 92px; height: 92px;
+      width: 92px;
+      height: 92px;
       margin-bottom: 2rem;
       animation: fadeUp 0.6s ease-out 0.1s both;
       position: relative;
     }
+
     .kebab-logo img { width: 100%; height: 100%; object-fit: contain; }
 
     .hero h1 {
@@ -251,10 +256,11 @@
       margin-bottom: 1.2rem;
       animation: fadeUp 0.6s ease-out 0.2s both;
     }
+
     .hero h1 .accent { color: var(--accent); }
 
     .hero p {
-      max-width: 640px;
+      max-width: 720px;
       font-size: 1.05rem;
       color: var(--text-secondary);
       font-weight: 300;
@@ -295,18 +301,6 @@
     }
     .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-1px); }
 
-    .btn-tertiary {
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px dashed var(--border);
-    }
-    .btn-tertiary:hover {
-      color: var(--text-primary);
-      border-color: var(--text-muted);
-      transform: translateY(-1px);
-    }
-
-    /* SECTIONS */
     section {
       padding: 90px 2rem;
       max-width: 1080px;
@@ -333,12 +327,11 @@
     .section-desc {
       color: var(--text-secondary);
       font-size: 1rem;
-      max-width: 680px;
+      max-width: 720px;
       margin-bottom: 2.5rem;
       font-weight: 300;
     }
 
-    /* DOCS GRID */
     .docs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -356,6 +349,7 @@
       color: inherit;
       position: relative;
       overflow: hidden;
+      min-height: 170px;
     }
 
     .doc-card:hover {
@@ -438,7 +432,6 @@
       z-index: 1;
     }
 
-    /* FOOTER */
     footer {
       padding: 3rem 2rem;
       text-align: center;
@@ -459,8 +452,7 @@
     }
     footer a:hover { color: var(--accent); }
 
-    /* ANIMATIONS */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px);} to { opacity: 1; transform: translateY(0);} }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
     .reveal {
       opacity: 0;
@@ -470,7 +462,6 @@
 
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* RESPONSIVE */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-github { display: none; }
@@ -478,6 +469,7 @@
 
       .hero { padding: 100px 1.5rem 70px; }
       section { padding: 60px 1.5rem; }
+
       .hero-actions { flex-direction: column; width: 100%; max-width: 340px; }
       .btn { justify-content: center; }
     }
@@ -485,10 +477,9 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="mainNav">
   <a href="index.html" class="nav-brand">
-    <img class="kebab-icon" src="https://raw.githubusercontent.com/kebab-os/docs/refs/heads/main/static/favicon.png" alt="kebabOS">
+    <img class="kebab-icon" src="static/logo_3.png" alt="kebabOS">
     <span>kebabOS Docs</span>
   </a>
 
@@ -507,7 +498,6 @@
   </button>
 </nav>
 
-<!-- MOBILE NAV -->
 <div class="mobile-nav-overlay" id="mobileNav">
   <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
     <i class="fa-solid fa-xmark"></i>
@@ -518,104 +508,78 @@
   <a href="https://github.com/kebab-os" target="_blank" rel="noopener">GitHub</a>
 </div>
 
-<!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-badge">
     <span class="dot"></span>
-    Documentation hub — updated 2026-03-02
+    Documentation hub — GUI + CLI
   </div>
 
   <div class="kebab-logo">
-    <img src="https://raw.githubusercontent.com/kebab-os/docs/refs/heads/main/static/favicon.png" alt="kebabOS logo">
+    <img src="static/logo_2.png" alt="kebabOS logo">
   </div>
 
   <h1>kebab<span class="accent">OS</span> Docs</h1>
 
   <p>
-    Clean, fast docs for using kebabOS: how to install, boot, and build your own apps.
-    Pick a path: GUI docs or CLI docs.
+    One place for kebabOS documentation: install + boot the GUI OS, and learn the kebab-cli terminal emulator
+    (setup, usage, controls, architecture, and development).
   </p>
 
   <div class="hero-actions">
     <a href="#docs" class="btn btn-primary"><i class="fa-solid fa-book"></i> Browse Docs</a>
-    <a href="#gui" class="btn btn-secondary"><i class="fa-solid fa-desktop"></i> kebab-gui</a>
-    <a href="#cli" class="btn btn-tertiary"><i class="fa-solid fa-terminal"></i> kebab-cli</a>
+    <a href="kebab-gui/index.html" class="btn btn-secondary"><i class="fa-solid fa-desktop"></i> kebab-gui</a>
+    <a href="kebab-cli/index.html" class="btn btn-secondary"><i class="fa-solid fa-terminal"></i> kebab-cli</a>
   </div>
 </section>
 
-<!-- DOCS -->
 <section id="docs">
   <div class="reveal">
     <p class="section-label">01 / Docs</p>
-    <h2 class="section-title">Start here.</h2>
+    <h2 class="section-title">Choose your track.</h2>
     <p class="section-desc">
-      The essentials for getting kebabOS running, and extending it with your own applications.
+      GUI docs (install/boot/custom apps) and CLI docs (installation, user guide, controls reference, architecture, development).
     </p>
   </div>
 
   <div class="docs-grid reveal" aria-label="Documentation cards">
-    <a class="doc-card" href="kebab-gui/install.html" id="gui">
+    <a class="doc-card" href="kebab-gui/index.html" id="gui">
       <div class="doc-card-top">
         <span class="doc-pill">kebab-gui</span>
-        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-download"></i></div>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-desktop"></i></div>
       </div>
-      <h3>Install Guide</h3>
-      <p>Install kebabOS on Windows, macOS, or Linux with clean step-by-step commands.</p>
+      <h3>kebab-gui</h3>
+      <p>Install kebabOS, boot it, and build custom apps for the GUI environment.</p>
       <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
     </a>
 
-    <a class="doc-card" href="kebab-gui/boot.html">
-      <div class="doc-card-top">
-        <span class="doc-pill">kebab-gui</span>
-        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-power-off"></i></div>
-      </div>
-      <h3>Boot Guide</h3>
-      <p>How to start kebabOS from the project root and where to get help if it fails.</p>
-      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
-    </a>
-
-    <a class="doc-card" href="kebab-gui/custom_apps.html">
-      <div class="doc-card-top">
-        <span class="doc-pill">kebab-gui</span>
-        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></div>
-      </div>
-      <h3>Custom Apps</h3>
-      <p>Build apps that talk to the kernel: init, input handling, rendering, and pro tips.</p>
-      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
-    </a>
-
-    <a class="doc-card" href="#cli">
+    <a class="doc-card" href="kebab-cli/index.html" id="cli">
       <div class="doc-card-top">
         <span class="doc-pill">kebab-cli</span>
         <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-terminal"></i></div>
       </div>
-      <h3>CLI Docs (coming soon)</h3>
-      <p>Reserved space for upcoming CLI documentation pages in <code>kebab-cli/</code>.</p>
-      <span class="arrow">Jump <i class="fa-solid fa-arrow-down"></i></span>
+      <h3>kebab-cli</h3>
+      <p>Setup and use the Pygame terminal emulator, plus controls, architecture, and dev docs.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
     </a>
-  </div>
-</section>
 
-<!-- CLI placeholder section -->
-<section id="cli">
-  <div class="reveal">
-    <p class="section-label">02 / kebab-cli</p>
-    <h2 class="section-title">CLI docs folder.</h2>
-    <p class="section-desc">
-      This repo will include a <code>kebab-cli/</code> directory for command-line documentation.
-      Add pages later without changing the site layout.
-    </p>
-  </div>
-
-  <div class="docs-grid reveal">
-    <a class="doc-card" href="#" onclick="return false;">
+    <a class="doc-card" href="kebab-gui/install.html">
       <div class="doc-card-top">
-        <span class="doc-pill">placeholder</span>
-        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></div>
+        <span class="doc-pill">GUI</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-download"></i></div>
       </div>
-      <h3>kebab-cli/index.html</h3>
-      <p>Create this later to introduce CLI usage and commands. The layout is ready.</p>
-      <span class="arrow">No link <i class="fa-solid fa-ban"></i></span>
+      <h3>GUI Install</h3>
+      <p>OS install commands for Windows/macOS/Linux (copy-ready).</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="kebab-cli/installation_setup.html">
+      <div class="doc-card-top">
+        <span class="doc-pill">CLI</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+      </div>
+      <h3>CLI Setup</h3>
+      <p>Requirements, dependency install, structure setup, and troubleshooting.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
     </a>
   </div>
 </section>
@@ -649,10 +613,18 @@
   var mobileNavClose = document.getElementById('mobileNavClose');
   var mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-  mobileMenuBtn.addEventListener('click', function() { mobileNav.classList.add('open'); });
-  mobileNavClose.addEventListener('click', function() { mobileNav.classList.remove('open'); });
+  mobileMenuBtn.addEventListener('click', function() {
+    mobileNav.classList.add('open');
+  });
+
+  mobileNavClose.addEventListener('click', function() {
+    mobileNav.classList.remove('open');
+  });
+
   mobileNavLinks.forEach(function(link) {
-    link.addEventListener('click', function() { mobileNav.classList.remove('open'); });
+    link.addEventListener('click', function() {
+      mobileNav.classList.remove('open');
+    });
   });
 
   /* Reveal on scroll */
@@ -665,7 +637,19 @@
       }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(function(el) { observer.observe(el); });
+
+  reveals.forEach(function(el) {
+    observer.observe(el);
+  });
+
+  /* Smooth scroll for anchor links */
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 </script>
 </body>
 </html>
