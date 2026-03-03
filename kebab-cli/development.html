@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="../static/favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kebabOS Docs — kebab-cli Development Guide</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --bg-card: #ffffff;
+      --bg-code: #f0efed;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6560;
+      --text-muted: #9e9893;
+      --accent: #e8553d;
+      --accent-glow: rgba(232, 85, 61, 0.12);
+      --teal: #2bbaa0;
+      --teal-glow: rgba(43, 186, 160, 0.12);
+      --border: #eae8e4;
+      --border-subtle: #f0efed;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    .dark {
+      --bg: #111110;
+      --bg-card: #1a1918;
+      --bg-code: #141413;
+      --text-primary: #ede9e3;
+      --text-secondary: #9e9893;
+      --text-muted: #6b6560;
+      --accent: #f06d55;
+      --accent-glow: rgba(240, 109, 85, 0.15);
+      --teal: #3dd4b8;
+      --teal-glow: rgba(61, 212, 184, 0.12);
+      --border: #2a2928;
+      --border-subtle: #222120;
+      --code-bg: #0d0d0c;
+      --code-text: #cdd6f4;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 60px;
+    }
+
+    ::selection { background: var(--accent); color: #fff; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    nav.scrolled {
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-brand .kebab-icon { width: 28px; height: 28px; }
+    .nav-brand span {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-github:hover { border-color: var(--text-muted); color: var(--text-primary); }
+
+    main { max-width: 1040px; margin: 0 auto; padding: 48px 2rem 80px; }
+
+    .page-head {
+      margin-bottom: 1.6rem;
+      padding: 1.25rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-head::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle at 18% 12%, var(--teal-glow), transparent 55%);
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      position: relative;
+    }
+    .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4vw, 2.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    .lead {
+      margin-top: 0.6rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      position: relative;
+      max-width: 92ch;
+    }
+
+    .content { margin-top: 1.1rem; display: grid; gap: 1rem; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.15rem 1.25rem;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.65rem;
+    }
+
+    h3 {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      letter-spacing: -0.01em;
+      margin: 0.95rem 0 0.45rem;
+    }
+
+    p, li { color: var(--text-secondary); font-weight: 300; }
+    strong { color: var(--text-primary); font-weight: 700; }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: var(--bg-code);
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    ul, ol { padding-left: 1.2rem; }
+    li { margin: 0.35rem 0; }
+
+    .mono-block {
+      margin-top: 0.6rem;
+      background: var(--code-bg);
+      border: 1px solid color-mix(in srgb, var(--code-bg) 70%, #ffffff 12%);
+      border-radius: 14px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .mono-block pre { margin: 0; padding: 1rem 1rem 1.1rem; overflow-x: auto; }
+    .mono-block code {
+      background: none; border: 0; padding: 0; border-radius: 0;
+      color: var(--code-text);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      white-space: pre;
+    }
+
+    .img-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .img-wrap {
+      width: 100%;
+      background: color-mix(in srgb, var(--bg-card) 88%, var(--bg) 12%);
+      border-bottom: 1px solid var(--border-subtle);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+
+    .img-wrap img {
+      width: min(860px, 100%);
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      background: #fff;
+    }
+
+    .img-caption {
+      padding: 0.9rem 1.1rem 1.1rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 2rem 2.5rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      main { padding: 36px 1.25rem 70px; }
+      nav { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+<nav id="mainNav">
+  <a href="../index.html" class="nav-brand">
+    <img class="kebab-icon" src="../static/logo_3.png" alt="kebabOS">
+    <span>kebabOS Docs</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="../index.html#docs">Docs</a></li>
+    <li><a href="../kebab-gui/index.html">kebab-gui</a></li>
+    <li><a href="index.html">kebab-cli</a></li>
+  </ul>
+
+  <a href="https://github.com/kebab-os" class="nav-github" target="_blank" rel="noopener">
+    <i class="fa-brands fa-github"></i> GitHub
+  </a>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> / <a href="index.html">kebab-cli</a> / Development
+    </div>
+    <h1>Kebab-CLI Development Guide</h1>
+    <p class="lead">
+      Module responsibilities, patterns, event loop structure, adding features, testing, performance, and debugging tips.
+    </p>
+  </header>
+
+  <div class="content">
+    <section class="card">
+      <h2>Architecture Overview</h2>
+      <p>
+        The CLI app is organized around a single entry point (<code>kebab_cli.py</code>) that wires together a terminal core
+        (<code>terminal.py</code>) with a renderer/UI layer (<code>renderer.py</code>), plus small modules for buffers and utilities.
+      </p>
+    </section>
+
+    <section class="img-card" aria-label="Architecture diagram">
+      <div class="img-wrap">
+        <!-- Put the provided image under the 'Architecture Overview' section -->
+        <img src="../static/cli_architecture.png" alt="Kebab-CLI architecture diagram">
+      </div>
+      <div class="img-caption">
+        Diagram: High-level component wiring between <code>kebab_cli.py</code>, the renderer, and core modules.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Module Descriptions</h2>
+
+      <h3><code>kebab_cli.py</code></h3>
+      <p><strong>Purpose:</strong> Application entry point and main event loop</p>
+      <p><strong>Key Functions:</strong></p>
+      <ul>
+        <li><code>boot()</code>: Initialize and run the application</li>
+        <li>Event handling for keyboard, mouse, window events</li>
+        <li>Main render loop at 60 FPS</li>
+        <li>Menu callback definitions</li>
+      </ul>
+      <p><strong>Key Variables:</strong></p>
+      <ul>
+        <li><code>CURSOR</code>: Default pointer cursor</li>
+        <li><code>CURSOR_TEXT</code>: Text input cursor</li>
+        <li><code>renderer</code>: TerminalRenderer instance</li>
+        <li><code>term</code>: TerminalEmulator instance</li>
+        <li><code>screen</code>: Pygame display surface</li>
+      </ul>
+
+      <h3><code>terminal.py</code></h3>
+      <p><strong>Purpose:</strong> Terminal emulator logic</p>
+      <p><strong>Key Classes:</strong> <code>TerminalEmulator</code></p>
+      <p><strong>Key Methods</strong> (implement these):</p>
+      <ul>
+        <li><code>handle_key(event)</code>: Process keyboard input</li>
+        <li><code>update_cursor(dt)</code>: Update cursor blink state</li>
+        <li><code>update_selection(pos)</code>: Handle text selection</li>
+        <li><code>start_selection(pos)</code>: Begin selection</li>
+        <li><code>end_selection()</code>: Complete selection</li>
+        <li><code>get_selection()</code>: Return selected text</li>
+        <li><code>get_prompt()</code>: Return current prompt string</li>
+        <li><code>run_command(cmd)</code>: Execute user command</li>
+      </ul>
+
+      <h3><code>renderer.py</code></h3>
+      <p><strong>Purpose:</strong> All rendering and UI display</p>
+      <p><strong>Key Classes:</strong> <code>TerminalRenderer</code>, <code>SettingsPanel</code></p>
+      <p><strong>Key Methods</strong> (implement these):</p>
+      <ul>
+        <li><code>clear()</code>, <code>flip()</code>, <code>resize(size)</code></li>
+        <li><code>render_buffer_with_input()</code>, <code>render_menu_bar()</code>, <code>render_dropdown()</code></li>
+        <li><code>update_font_size(size)</code>, <code>update_line_height(height)</code></li>
+        <li><code>get_size()</code>, <code>menu_at_pos(pos)</code></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Key Code Sections</h2>
+
+      <h3>Mouse Position Detection</h3>
+      <div class="mono-block">
+        <pre><code># Output text region
+usable_height = height_now - 2 * renderer.padding - ...
+visible, start_idx = term.output_buffer.get_visible_with_start(
+    usable_height, renderer.line_height
+)
+
+# Input line region
+prompt = term.get_prompt()
+combined = prompt + term.input_buffer.get_text()
+input_y = height_now - renderer.padding - renderer.line_height</code></pre>
+      </div>
+
+      <h3>Text Width Calculation</h3>
+      <div class="mono-block">
+        <pre><code>txt = strip_ansi(line_data['text'])
+txt_w = renderer.font.size(txt)[0]
+# Character position detection
+for ci in range(len(txt)+1):
+    if renderer.font.size(txt[:ci])[0] + renderer.padding > mx:
+        rel_char = max(0, ci-1)
+        break</code></pre>
+      </div>
+
+      <h3>Event Loop Structure</h3>
+      <div class="mono-block">
+        <pre><code>running = True
+while running and term.running:
+    dt = clock.tick(60)  # 60 FPS cap
+    
+    for event in pygame.event.get():
+        # Handle events
+        
+    # Update logic
+    term.update_cursor(dt)
+    
+    # Render
+    renderer.clear()
+    renderer.render_buffer_with_input(...)
+    renderer.render_menu_bar(...)
+    renderer.flip()</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Adding New Features</h2>
+
+      <h3>Adding a Menu Item</h3>
+      <div class="mono-block">
+        <pre><code># Update menu definition in renderer.py:
+self.menus = [
+    {'label': 'File', 'items': ['Save', 'Save As', 'Clear', 'New Item']}
+]
+
+# Add callback in kebab_cli.py:
+def new_feature():
+    term.output_buffer.add("Feature executed!", TERM_CONFIG['success_color'])
+
+renderer.menu_callbacks = {
+    'File': {
+        'Save': save_output,
+        'Save As': save_as,
+        'Clear': clear_output,
+        'New Item': new_feature
+    }
+}</code></pre>
+      </div>
+
+      <h3>Adding a Settings Control</h3>
+      <div class="mono-block">
+        <pre><code># Create slider definition in SettingsPanel:
+self.sliders = [
+    {'key': 'font_size', 'label': 'Font Size', 'min': 8, 'max': 32, 'value': 14},
+    {'key': 'new_setting', 'label': 'New Setting', 'min': 0, 'max': 100, 'value': 50}
+]
+
+# Handle slider update in mouse motion event:
+if key == 'new_setting':
+    renderer.update_setting(new_value)</code></pre>
+      </div>
+
+      <h3>Adding Keyboard Shortcuts</h3>
+      <div class="mono-block">
+        <pre><code># In terminal.py handle_key():
+if event.key == pygame.K_s and event.mod & pygame.KMOD_CTRL:
+    self.output_buffer.add("Ctrl+S pressed!", color)</code></pre>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Testing</h2>
+
+      <h3>Unit Testing Template</h3>
+      <div class="mono-block">
+        <pre><code># test_terminal.py
+import unittest
+from terminal import TerminalEmulator
+
+class TestTerminalEmulator(unittest.TestCase):
+    def setUp(self):
+        self.term = TerminalEmulator()
+    
+    def test_input_buffer(self):
+        self.term.input_buffer.add_char('a')
+        self.assertEqual(self.term.input_buffer.get_text(), 'a')
+    
+    def test_output_buffer(self):
+        self.term.output_buffer.add("Test", (255, 255, 255))
+        self.assertGreater(len(self.term.output_buffer.lines), 0)
+
+if __name__ == '__main__':
+    unittest.main()</code></pre>
+      </div>
+
+      <h3>Manual Testing Checklist</h3>
+      <ul>
+        <li>[ ] Application starts without errors</li>
+        <li>[ ] Window can be resized</li>
+        <li>[ ] Menu clicks work</li>
+        <li>[ ] File operations work</li>
+        <li>[ ] Settings panel opens/closes</li>
+        <li>[ ] Text selection works</li>
+        <li>[ ] Scrolling works</li>
+        <li>[ ] Keyboard input works</li>
+        <li>[ ] Mouse cursor changes correctly</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Debugging Tips</h2>
+      <h3>Enable Debug Output</h3>
+      <div class="mono-block">
+        <pre><code># Add to kebab_cli.py
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# In event handlers
+logger.debug(f"Event type: {event.type}, Position: {event.pos}")</code></pre>
+      </div>
+
+      <h3>Common Issues</h3>
+      <ol>
+        <li><strong>Cursor position incorrect</strong>
+          <ul>
+            <li>Check <code>strip_ansi()</code> is called before width calculation</li>
+            <li>Verify coordinate system (screen space vs text space)</li>
+          </ul>
+        </li>
+        <li><strong>Menu not responding</strong>
+          <ul>
+            <li>Check menu label exact match in callbacks dict</li>
+            <li>Verify callback is not <code>None</code></li>
+            <li>Add try/except to see exceptions</li>
+          </ul>
+        </li>
+        <li><strong>Rendering artifacts</strong>
+          <ul>
+            <li>Ensure <code>renderer.clear()</code> called before rendering</li>
+            <li>Check for overlapping UI elements</li>
+            <li>Verify double buffering is enabled</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+  </div>
+</main>
+
+<footer>
+  kebabOS Docs — kebab-cli Development Guide
+</footer>
+
+<script>
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark');
+  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(event) {
+    if (event.matches) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  });
+
+  var mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 20) mainNav.classList.add('scrolled');
+    else mainNav.classList.remove('scrolled');
+  });
+</script>
+</body>
+</html>
