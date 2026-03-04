@@ -4,7 +4,7 @@
   <link rel="icon" type="image/x-icon" href="../static/favicon.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kebabOS Docs — kebab-cli Installation &amp; Setup</title>
+  <title>kebabOS Docs — kebab-cli</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -23,8 +23,6 @@
       --teal-glow: rgba(43, 186, 160, 0.12);
       --border: #eae8e4;
       --border-subtle: #f0efed;
-      --code-bg: #1e1e2e;
-      --code-text: #cdd6f4;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
       --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
       --radius: 12px;
@@ -46,8 +44,6 @@
       --teal-glow: rgba(61, 212, 184, 0.12);
       --border: #2a2928;
       --border-subtle: #222120;
-      --code-bg: #0d0d0c;
-      --code-text: #cdd6f4;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
       --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
     }
@@ -104,7 +100,13 @@
       letter-spacing: -0.02em;
     }
 
-    .nav-links { display: flex; align-items: center; gap: 1.25rem; list-style: none; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
     .nav-links a {
       font-family: var(--font-mono);
       font-size: 0.75rem;
@@ -130,11 +132,15 @@
     }
     .nav-github:hover { border-color: var(--text-muted); color: var(--text-primary); }
 
-    main { max-width: 980px; margin: 0 auto; padding: 48px 2rem 80px; }
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 2rem 80px;
+    }
 
     .page-head {
       margin-bottom: 1.6rem;
-      padding: 1.25rem 1.25rem;
+      padding: 1.35rem 1.25rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg-card);
@@ -147,7 +153,7 @@
       content: "";
       position: absolute;
       inset: -80px;
-      background: radial-gradient(circle at 18% 12%, var(--teal-glow), transparent 55%);
+      background: radial-gradient(circle at 20% 10%, var(--accent-glow), transparent 55%);
       pointer-events: none;
     }
 
@@ -158,14 +164,15 @@
       margin-bottom: 0.65rem;
       position: relative;
     }
+
     .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
     .breadcrumb a:hover { color: var(--accent); }
 
     h1 {
       font-family: var(--font-display);
-      font-size: clamp(1.9rem, 4vw, 2.4rem);
+      font-size: clamp(2.1rem, 4vw, 2.7rem);
       letter-spacing: -0.03em;
-      line-height: 1.15;
+      line-height: 1.12;
       position: relative;
     }
 
@@ -174,112 +181,121 @@
       color: var(--text-secondary);
       font-weight: 300;
       position: relative;
-      max-width: 78ch;
+      max-width: 80ch;
     }
 
-    .content { margin-top: 1.1rem; display: grid; gap: 1rem; }
+    .grid {
+      margin-top: 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
 
-    .card {
+    .platform-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
+      padding: 1.5rem;
       box-shadow: var(--shadow-sm);
-      padding: 1.15rem 1.25rem;
-    }
-
-    h2 {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.65rem;
-    }
-
-    h3 {
-      font-family: var(--font-display);
-      font-size: 1.02rem;
-      letter-spacing: -0.01em;
-      margin: 0.95rem 0 0.45rem;
-    }
-
-    p, li { color: var(--text-secondary); font-weight: 300; }
-    strong { color: var(--text-primary); font-weight: 700; }
-
-    .inline-code, code {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      background: var(--bg-code);
-      padding: 2px 8px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-    }
-
-    ul { padding-left: 1.2rem; }
-    ol { padding-left: 1.2rem; }
-    li { margin: 0.35rem 0; }
-
-    .code-block {
-      background: var(--code-bg);
-      border: 1px solid color-mix(in srgb, var(--code-bg) 70%, #ffffff 12%);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
       position: relative;
-      margin-top: 0.6rem;
+      overflow: hidden;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .code-top {
+    .platform-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--text-muted);
+      box-shadow: var(--shadow-md);
+    }
+
+    .platform-card::after {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle at 20% 20%, var(--teal-glow), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .platform-card:hover::after { opacity: 1; }
+
+    .platform-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
+      margin-bottom: 1.2rem;
+      position: relative;
+      z-index: 1;
     }
 
-    .code-top .lang {
+    .platform-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .platform-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      flex: 0 0 auto;
+    }
+
+    .code-block {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 0.5rem 0 0.5rem 0;
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: rgba(205, 214, 244, 0.8);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
+      z-index: 1;
+      color: var(--text-secondary);
+    }
+
+    .note {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+      position: relative;
+      z-index: 1;
     }
 
     .copy-btn {
-      background: rgba(255,255,255,0.08);
-      border: none;
-      color: var(--code-text);
-      padding: 6px 10px;
-      border-radius: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-secondary);
       cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      transition: background 0.2s;
-    }
-    .copy-btn:hover { background: rgba(255,255,255,0.14); }
-    .copy-btn.copied { color: var(--teal); }
-
-    pre { margin: 0; padding: 1rem 1rem 1.1rem; overflow-x: auto; }
-    pre code {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--code-text);
-      white-space: pre;
-      background: none;
-      border: 0;
-      padding: 0;
-      border-radius: 0;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+      align-self: flex-start;
+      position: relative;
+      z-index: 2;
     }
 
-    .callout {
-      border-left: 3px solid var(--accent);
-      background: color-mix(in srgb, var(--accent-glow) 45%, var(--bg-card));
-      padding: 1rem 1rem;
-      border-radius: 12px;
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
-
-    .callout a { color: var(--accent); text-decoration: none; }
-    .callout a:hover { text-decoration: underline; }
 
     footer {
       text-align: center;
@@ -290,14 +306,26 @@
       font-size: 0.75rem;
     }
 
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
       .nav-links { display: none; }
       main { padding: 36px 1.25rem 70px; }
-      nav { padding: 0 1.25rem; }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
 <nav id="mainNav">
   <a href="../index.html" class="nav-brand">
     <img class="kebab-icon" src="../static/logo_3.png" alt="kebabOS">
@@ -316,415 +344,77 @@
 </nav>
 
 <main>
-  <header class="page-head">
+  <header class="page-head reveal">
     <div class="breadcrumb">
-      <a href="../index.html">Home</a> / <a href="index.html">kebab-cli</a> / Installation &amp; Setup
+      <a href="../index.html">Home</a> / kebab-cli
     </div>
-    <h1>Kebab-CLI Installation &amp; Setup</h1>
+    <h1>kebab-cli installation</h1>
     <p class="lead">
-      Requirements, dependencies, installation, project structure, and troubleshooting for kebab-cli.
+      Copy and paste the commands for your operating system to get started with kebab-cli.
     </p>
   </header>
 
-  <div class="content">
-    <section class="card">
-      <h2>System Requirements</h2>
-      <ul>
-        <li><strong>Python:</strong> 3.7 or higher</li>
-        <li><strong>Operating System:</strong> Windows, macOS, or Linux</li>
-        <li><strong>RAM:</strong> Minimum 512MB (1GB recommended)</li>
-        <li><strong>Display:</strong> Any resolution (fullscreen native resolution recommended)</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Dependencies</h2>
-
-      <h3>Required</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">text</span>
-          <button class="copy-btn" data-code="pygame>=2.0.0      # Window management and rendering">Copy</button>
-        </div>
-        <pre><code>pygame>=2.0.0      # Window management and rendering</code></pre>
+  <section class="grid reveal" aria-label="Platform-specific installation instructions">
+    <div class="platform-card">
+      <div class="platform-header">
+        <h2><i class="fa-brands fa-windows" style="margin-right: 8px;"></i> Windows</h2>
+        <div class="platform-icon" aria-hidden="true"><i class="fa-brands fa-windows"></i></div>
       </div>
-
-      <h3>Optional</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">text</span>
-          <button class="copy-btn" data-code="tkinter            # For &quot;Save As&quot; file dialog (usually included with Python)">Copy</button>
-        </div>
-        <pre><code>tkinter            # For "Save As" file dialog (usually included with Python)</code></pre>
+      <div class="code-block" id="windows-code">
+cd ~
+if (!(Test-Path .kebab)) { mkdir .kebab }
+cd .kebab
+curl.exe -L https://github.com/kebab-os/kebab-cli/archive/refs/heads/main.zip -o kebab-cli.zip
+Expand-Archive -Path kebab-cli.zip -DestinationPath . -Force
+cd kebab-cli/src
       </div>
-    </section>
+      <button class="copy-btn" onclick="copyToClipboard('windows-code')">
+        <i class="fa-regular fa-clipboard"></i> Copy commands
+      </button>
+      <p class="note">Run in PowerShell as administrator</p>
+    </div>
 
-    <section class="card">
-      <h2>Installation</h2>
-
-      <h3>1. Clone or Download the Repository</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="git clone https://github.com/kebab-os/kebab-cli.git
-cd kebab-cli">Copy</button>
-        </div>
-        <pre><code>git clone https://github.com/kebab-os/kebab-cli.git
-cd kebab-cli</code></pre>
+    <div class="platform-card">
+      <div class="platform-header">
+        <h2><i class="fa-brands fa-linux" style="margin-right: 8px;"></i> Linux</h2>
+        <div class="platform-icon" aria-hidden="true"><i class="fa-brands fa-linux"></i></div>
       </div>
-
-      <h3>2. Create Virtual Environment (Recommended)</h3>
-      <p><strong>Windows:</strong></p>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="python -m venv venv
-venv\Scripts\activate">Copy</button>
-        </div>
-        <pre><code>python -m venv venv
-venv\Scripts\activate</code></pre>
+      <div class="code-block" id="linux-code">
+cd ~
+mkdir .kebab
+cd .kebab
+git clone https://github.com/kebab-os/kebab-cli.git
+cd kebab-cli/src
+sudo apt-get install xclip
       </div>
+      <button class="copy-btn" onclick="copyToClipboard('linux-code')">
+        <i class="fa-regular fa-clipboard"></i> Copy commands
+      </button>
+      <p class="note">For Debian/Ubuntu. Other distros: use your package manager (pacman, dnf, etc.)</p>
+    </div>
 
-      <p style="margin-top:0.75rem;"><strong>macOS/Linux:</strong></p>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="python3 -m venv venv
-source venv/bin/activate">Copy</button>
-        </div>
-        <pre><code>python3 -m venv venv
-source venv/bin/activate</code></pre>
+    <div class="platform-card">
+      <div class="platform-header">
+        <h2><i class="fa-brands fa-apple" style="margin-right: 8px;"></i> macOS</h2>
+        <div class="platform-icon" aria-hidden="true"><i class="fa-brands fa-apple"></i></div>
       </div>
-
-      <h3>3. Install Dependencies</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="pip install pygame">Copy</button>
-        </div>
-        <pre><code>pip install pygame</code></pre>
+      <div class="code-block" id="mac-code">
+cd ~
+mkdir .kebab
+cd .kebab
+git clone https://github.com/kebab-os/kebab-cli.git
+cd kebab-cli/src
       </div>
-
-      <h3>4. Verify Installation</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="python -c &quot;import pygame; print(f'Pygame {pygame.version.ver} installed successfully')&quot;">Copy</button>
-        </div>
-        <pre><code>python -c "import pygame; print(f'Pygame {pygame.version.ver} installed successfully')"</code></pre>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Project Structure Setup</h2>
-      <p>Ensure the following directory structure exists:</p>
-
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">text</span>
-          <button class="copy-btn" data-code="kebab-cli/
-├── kebab_cli.py              (main entry point)
-├── terminal.py               (terminal emulator)
-├── renderer.py               (rendering system)
-├── config.py                 (configuration)
-├── utils.py                  (utilities)
-├── input_buffer.py           (input handling)
-├── output_buffer.py          (output handling)
-├── static/
-│   └── system/
-│       ├── cursor.png        (pointer cursor image)
-│       ├── cursor-text.png   (text cursor image)
-│       └── favicon.png       (window icon)
-├── storage/
-│   └── files/                (working directory - auto-created)
-├── requirements.txt          (optional)
-└── README.md">Copy</button>
-        </div>
-        <pre><code>kebab-cli/
-├── kebab_cli.py              (main entry point)
-├── terminal.py               (terminal emulator)
-├── renderer.py               (rendering system)
-├── config.py                 (configuration)
-├── utils.py                  (utilities)
-├── input_buffer.py           (input handling)
-├── output_buffer.py          (output handling)
-├── static/
-│   └── system/
-│       ├── cursor.png        (pointer cursor image)
-│       ├── cursor-text.png   (text cursor image)
-│       └── favicon.png       (window icon)
-├── storage/
-│   └── files/                (working directory - auto-created)
-├── requirements.txt          (optional)
-└── README.md</code></pre>
-      </div>
-
-      <h3>Auto-Created Directories</h3>
-      <ul>
-        <li><code>storage/files/</code> — Default working directory for file operations</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Running the Application</h2>
-
-      <h3>Standard Execution</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="python kebab_cli.py">Copy</button>
-        </div>
-        <pre><code>python kebab_cli.py</code></pre>
-      </div>
-
-      <p style="margin-top:0.9rem;">The application will:</p>
-      <ol>
-        <li>Initialize Pygame</li>
-        <li>Create a fullscreen window</li>
-        <li>Load custom cursors and favicon</li>
-        <li>Display the welcome message</li>
-        <li>Ready for input</li>
-      </ol>
-    </section>
-
-    <section class="card">
-      <h2>Troubleshooting Startup Issues</h2>
-
-      <h3>"ModuleNotFoundError: No module named 'pygame'"</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="pip install pygame
-pip install --upgrade --force-reinstall pygame">Copy</button>
-        </div>
-        <pre><code># Make sure pygame is installed
-pip install pygame
-
-# Or reinstall if corrupted
-pip install --upgrade --force-reinstall pygame</code></pre>
-      </div>
-
-      <h3>"ModuleNotFoundError: No module named 'terminal'"</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="ls -la
-python -c &quot;from kebab_cli import *&quot;">Copy</button>
-        </div>
-        <pre><code># Make sure you're in the correct directory with all modules
-ls -la  # or dir (on Windows)
-
-# Verify the file exists
-python -c "from kebab_cli import *"</code></pre>
-      </div>
-
-      <h3>"Cannot find image file 'static/system/cursor.png'"</h3>
-      <ul>
-        <li>Ensure you're running from the correct directory</li>
-        <li>Check that <code>static/</code> directory exists with all required PNG files</li>
-        <li>File paths are relative to the script execution location</li>
-      </ul>
-
-      <h3>"pygame.error: No available video device"</h3>
-      <ul>
-        <li>This is a display server issue (common on headless/SSH systems)</li>
-        <li>Solution: Install a display driver or use X11 forwarding</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Configuration</h2>
-
-      <h3>Settings File (Optional)</h3>
-      <p>Create <code>config.py</code> if it doesn't exist with default values:</p>
-
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">python</span>
-          <button class="copy-btn" data-code="TERM_CONFIG = {
-    'success_color': (0, 255, 0),      # Green
-    'error_color': (255, 0, 0),        # Red
-    'prompt_color': (100, 149, 237),   # Cornflower blue
-    'default_color': (255, 255, 255),  # White
-    'background_color': (0, 0, 0),     # Black
-    'font_name': 'monospace',
-    'font_size': 14,
-    'line_height': 20,
-}">Copy</button>
-        </div>
-        <pre><code>TERM_CONFIG = {
-    'success_color': (0, 255, 0),      # Green
-    'error_color': (255, 0, 0),        # Red
-    'prompt_color': (100, 149, 237),   # Cornflower blue
-    'default_color': (255, 255, 255),  # White
-    'background_color': (0, 0, 0),     # Black
-    'font_name': 'monospace',
-    'font_size': 14,
-    'line_height': 20,
-}</code></pre>
-      </div>
-
-      <h3>Environment Variables</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="export KEBAB_WORK_DIR=/path/to/directory
-python main.py
-
-export KEBAB_FONT=&quot;Courier New&quot;
-python main.py">Copy</button>
-        </div>
-        <pre><code># Set custom working directory
-export KEBAB_WORK_DIR=/path/to/directory
-python main.py
-
-# Set custom font (if implemented)
-export KEBAB_FONT="Courier New"
-python main.py</code></pre>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Asset Files</h2>
-
-      <h3>Required Image Assets</h3>
-      <p>Place these files in <code>static/system/</code>:</p>
-      <ol>
-        <li><strong>cursor.png</strong> (16x24 pixels recommended)</li>
-        <li><strong>cursor-text.png</strong> (16x24 pixels recommended)</li>
-        <li><strong>favicon.png</strong> (32x32 or 64x64 pixels)</li>
-      </ol>
-
-      <h3>Creating Custom Cursors</h3>
-      <ol>
-        <li>Design 24x24 pixel PNG images</li>
-        <li>Use transparent background</li>
-        <li>Place hotspot coordinates carefully</li>
-        <li>Save to <code>static/system/</code></li>
-      </ol>
-
-      <p>PNG files must be RGBA format with transparency support.</p>
-    </section>
-
-    <section class="card">
-      <h2>Post-Installation Verification</h2>
-
-      <h3>Quick Test</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="python -c &quot;
-import sys
-sys.path.insert(0, '.')
-try:
-    from kebab_cli import boot
-    print('✓ Module imports successful')
-    print('✓ Ready to run: python kebab_cli.py')
-except Exception as e:
-    print(f'✗ Error: {e}')
-&quot;">Copy</button>
-        </div>
-        <pre><code>python -c "
-import sys
-sys.path.insert(0, '.')
-try:
-    from kebab_cli import boot
-    print('✓ Module imports successful')
-    print('✓ Ready to run: python kebab_cli.py')
-except Exception as e:
-    print(f'✗ Error: {e}')
-"</code></pre>
-      </div>
-
-      <h3>Full Startup Test</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="python kebab_cli.py &
-sleep 2
-pkill -f kebab_cli.py
-echo &quot;✓ Application started and stopped successfully&quot;">Copy</button>
-        </div>
-        <pre><code>python kebab_cli.py &
-sleep 2
-pkill -f kebab_cli.py
-echo "✓ Application started and stopped successfully"</code></pre>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Platform-Specific Notes</h2>
-
-      <h3>Windows</h3>
-      <ul>
-        <li><strong>DPI Awareness:</strong> Automatically enabled (Windows 10+)</li>
-        <li><strong>Fonts:</strong> Ensure monospace font is installed (Consolas, Courier New)</li>
-        <li><strong>File Paths:</strong> Backslashes handled automatically</li>
-      </ul>
-
-      <h3>macOS</h3>
-      <ul>
-        <li><strong>Fullscreen:</strong> May behave differently on M1/M2 Macs</li>
-        <li><strong>Fonts:</strong> Use Monaco or Courier New</li>
-        <li><strong>Permissions:</strong> May need terminal app permissions</li>
-      </ul>
-
-      <h3>Linux</h3>
-      <ul>
-        <li><strong>Display Server:</strong> X11 or Wayland required</li>
-        <li><strong>Fonts:</strong> Install Liberation Mono or Ubuntu Mono</li>
-        <li><strong>Dependencies:</strong> May need: <code>sudo apt-get install python3-tk python3-pygame</code></li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Uninstallation</h2>
-
-      <h3>Remove Application</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="rm -rf kebab-cli
-rmdir /s kebab-cli">Copy</button>
-        </div>
-        <pre><code># Remove the directory
-rm -rf kebab-cli
-
-# Or on Windows
-rmdir /s kebab-cli</code></pre>
-      </div>
-
-      <h3>Remove Virtual Environment</h3>
-      <div class="code-block">
-        <div class="code-top">
-          <span class="lang">bash</span>
-          <button class="copy-btn" data-code="deactivate
-rm -rf venv
-rmdir /s venv">Copy</button>
-        </div>
-        <pre><code># Deactivate first
-deactivate
-
-# Remove
-rm -rf venv
-
-# Or on Windows
-rmdir /s venv</code></pre>
-      </div>
-    </section>
-
-    <section class="card callout">
-      <h2>Getting Help</h2>
-      <p>
-        When reporting issues, include Python version (<code>python --version</code>),
-        Pygame version (<code>pip show pygame</code>), your OS, and the full error message.
-      </p>
-    </section>
-  </div>
+      <button class="copy-btn" onclick="copyToClipboard('mac-code')">
+        <i class="fa-regular fa-clipboard"></i> Copy commands
+      </button>
+      <p class="note">Xcode command line tools required for git</p>
+    </div>
+  </section>
 </main>
 
 <footer>
-  kebabOS Docs — kebab-cli Installation &amp; Setup
+  kebabOS Docs — kebab-cli
 </footer>
 
 <script>
@@ -744,21 +434,35 @@ rmdir /s venv</code></pre>
     else mainNav.classList.remove('scrolled');
   });
 
-  /* Copy buttons */
-  document.querySelectorAll('.copy-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var code = btn.getAttribute('data-code') || '';
-      if (!navigator.clipboard) return;
-      navigator.clipboard.writeText(code).then(function() {
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(function() {
-          btn.textContent = 'Copy';
-          btn.classList.remove('copied');
-        }, 1800);
-      });
+  /* Reveal */
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
     });
-  });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(function(el) { observer.observe(el); });
+
+  /* Copy to clipboard */
+  function copyToClipboard(elementId) {
+    const codeBlock = document.getElementById(elementId);
+    const text = codeBlock.innerText;
+    
+    navigator.clipboard.writeText(text).then(function() {
+      const btn = event.target;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-regular fa-check"></i> Copied!';
+      setTimeout(function() {
+        btn.innerHTML = originalText;
+      }, 2000);
+    }, function(err) {
+      console.error('Could not copy text: ', err);
+    });
+  }
 </script>
 </body>
 </html>
