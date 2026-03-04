@@ -187,31 +187,31 @@
     .grid {
       margin-top: 1.25rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1rem;
     }
 
-    .platform-card {
+    .doc-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.5rem;
       box-shadow: var(--shadow-sm);
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
       position: relative;
       overflow: hidden;
-      min-height: 250px;
-      display: flex;
-      flex-direction: column;
+      min-height: 170px;
     }
 
-    .platform-card:hover {
+    .doc-card:hover {
       transform: translateY(-2px);
       border-color: var(--text-muted);
       box-shadow: var(--shadow-md);
     }
 
-    .platform-card::after {
+    .doc-card::after {
       content: "";
       position: absolute;
       inset: -40px;
@@ -220,25 +220,30 @@
       transition: opacity 0.25s ease;
       pointer-events: none;
     }
-    .platform-card:hover::after { opacity: 1; }
+    .doc-card:hover::after { opacity: 1; }
 
-    .platform-header {
+    .doc-card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.2rem;
+      gap: 12px;
+      margin-bottom: 0.9rem;
       position: relative;
       z-index: 1;
     }
 
-    .platform-header h2 {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+    .pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--teal);
+      background: var(--teal-glow);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--teal) 18%, transparent);
+      white-space: nowrap;
     }
 
-    .platform-icon {
+    .doc-icon {
       width: 40px;
       height: 40px;
       border-radius: 12px;
@@ -250,51 +255,35 @@
       flex: 0 0 auto;
     }
 
-    .code-block {
-      background: var(--bg-code);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem;
-      margin: 0.5rem 0 0.5rem 0;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      line-height: 1.6;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      position: relative;
-      z-index: 1;
-      color: var(--text-secondary);
-    }
-
-    .note {
-      margin-top: 0.8rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-style: italic;
+    .doc-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
       position: relative;
       z-index: 1;
     }
 
-    .copy-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
+    .doc-card p {
       color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 0.5rem;
-      align-self: flex-start;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.7;
       position: relative;
-      z-index: 2;
+      z-index: 1;
     }
 
-    .copy-btn:hover {
-      border-color: var(--accent);
+    .doc-card .arrow {
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       color: var(--accent);
+      position: relative;
+      z-index: 1;
     }
 
     footer {
@@ -320,7 +309,6 @@
       nav { padding: 0 1.25rem; }
       .nav-links { display: none; }
       main { padding: 36px 1.25rem 70px; }
-      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -348,68 +336,63 @@
     <div class="breadcrumb">
       <a href="../index.html">Home</a> / kebab-cli
     </div>
-    <h1>kebab-cli installation</h1>
+    <h1>kebab-cli docs</h1>
     <p class="lead">
-      Copy and paste the commands for your operating system to get started with kebab-cli.
+      GUI terminal emulator documentation: installation, usage, controls, architecture, and development notes.
+      (Pages live in <code>kebab-cli/</code>.)
     </p>
   </header>
 
-  <section class="grid reveal" aria-label="Platform-specific installation instructions">
-    <div class="platform-card">
-      <div class="platform-header">
-        <h2><i class="fa-brands fa-windows" style="margin-right: 8px;"></i> Windows</h2>
-        <div class="platform-icon" aria-hidden="true"><i class="fa-brands fa-windows"></i></div>
+  <section class="grid reveal" aria-label="kebab-cli documentation pages">
+    <a class="doc-card" href="installation_setup.html">
+      <div class="doc-card-top">
+        <span class="pill">Setup</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></div>
       </div>
-      <div class="code-block" id="windows-code">
-cd ~
-if (!(Test-Path .kebab)) { mkdir .kebab }
-cd .kebab
-curl.exe -L https://github.com/kebab-os/kebab-cli/archive/refs/heads/main.zip -o kebab-cli.zip
-Expand-Archive -Path kebab-cli.zip -DestinationPath . -Force
-cd kebab-cli/src
-      </div>
-      <button class="copy-btn" onclick="copyToClipboard('windows-code')">
-        <i class="fa-regular fa-clipboard"></i> Copy commands
-      </button>
-      <p class="note">Run in PowerShell as administrator</p>
-    </div>
+      <h2>Installation &amp; Setup</h2>
+      <p>System requirements, dependencies, install steps, folder layout, and troubleshooting.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
 
-    <div class="platform-card">
-      <div class="platform-header">
-        <h2><i class="fa-brands fa-linux" style="margin-right: 8px;"></i> Linux</h2>
-        <div class="platform-icon" aria-hidden="true"><i class="fa-brands fa-linux"></i></div>
+    <a class="doc-card" href="user_guide.html">
+      <div class="doc-card-top">
+        <span class="pill">Usage</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-book"></i></div>
       </div>
-      <div class="code-block" id="linux-code">
-cd ~
-mkdir .kebab
-cd .kebab
-git clone https://github.com/kebab-os/kebab-cli.git
-cd kebab-cli/src
-sudo apt-get install xclip
-      </div>
-      <button class="copy-btn" onclick="copyToClipboard('linux-code')">
-        <i class="fa-regular fa-clipboard"></i> Copy commands
-      </button>
-      <p class="note">For Debian/Ubuntu. Other distros: use your package manager (pacman, dnf, etc.)</p>
-    </div>
+      <h2>User Guide</h2>
+      <p>Menus, settings panel, selection, saving output, window behavior, and troubleshooting.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
 
-    <div class="platform-card">
-      <div class="platform-header">
-        <h2><i class="fa-brands fa-apple" style="margin-right: 8px;"></i> macOS</h2>
-        <div class="platform-icon" aria-hidden="true"><i class="fa-brands fa-apple"></i></div>
+    <a class="doc-card" href="keyboard_mouse_controls.html">
+      <div class="doc-card-top">
+        <span class="pill">Reference</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-keyboard"></i></div>
       </div>
-      <div class="code-block" id="mac-code">
-cd ~
-mkdir .kebab
-cd .kebab
-git clone https://github.com/kebab-os/kebab-cli.git
-cd kebab-cli/src
+      <h2>Keyboard &amp; Mouse Controls</h2>
+      <p>Quick reference for input, navigation, selection, scrolling, and menu interactions.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="architecture.html">
+      <div class="doc-card-top">
+        <span class="pill">Deep dive</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></div>
       </div>
-      <button class="copy-btn" onclick="copyToClipboard('mac-code')">
-        <i class="fa-regular fa-clipboard"></i> Copy commands
-      </button>
-      <p class="note">Xcode command line tools required for git</p>
-    </div>
+      <h2>Architecture</h2>
+      <p>Core components, event flow, rendering pipeline, and key design decisions.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+
+    <a class="doc-card" href="development.html">
+      <div class="doc-card-top">
+        <span class="pill">Contributing</span>
+        <div class="doc-icon" aria-hidden="true"><i class="fa-solid fa-code"></i></div>
+      </div>
+      <h2>Development Guide</h2>
+      <p>Module breakdown, patterns, testing, debugging tips, and adding new features.</p>
+      <span class="arrow">Open <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
   </section>
 </main>
 
@@ -446,23 +429,7 @@ cd kebab-cli/src
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
   reveals.forEach(function(el) { observer.observe(el); });
-
-  /* Copy to clipboard */
-  function copyToClipboard(elementId) {
-    const codeBlock = document.getElementById(elementId);
-    const text = codeBlock.innerText;
-    
-    navigator.clipboard.writeText(text).then(function() {
-      const btn = event.target;
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-regular fa-check"></i> Copied!';
-      setTimeout(function() {
-        btn.innerHTML = originalText;
-      }, 2000);
-    }, function(err) {
-      console.error('Could not copy text: ', err);
-    });
-  }
 </script>
 </body>
 </html>
+```
