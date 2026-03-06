@@ -179,7 +179,7 @@
     /* Prerequisite Callout */
     .pre-req {
       margin-top: 1.5rem;
-      padding: 0.8rem 1rem;
+      padding: 0.8rem 1.2rem;
       background: var(--teal-glow);
       border: 1px solid var(--teal);
       border-radius: 8px;
@@ -189,6 +189,18 @@
       gap: 12px;
       color: var(--text-primary);
       position: relative;
+    }
+
+    .pre-req a {
+      color: var(--teal);
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .pre-req a:hover {
+      border-bottom-color: var(--teal);
     }
 
     .grid {
@@ -389,7 +401,7 @@
     
     <div class="pre-req">
       <i class="fa-brands fa-python" style="color: var(--teal);"></i>
-      <span>Before starting, make sure you have <b>Python 3.10+</b> installed on your system.</span>
+      <span>Before starting, make sure you have <b>Python 3.10+</b> installed. <a href="https://www.python.org/downloads/" target="_blank">Download Python here</a>.</span>
     </div>
   </header>
 
