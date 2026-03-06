@@ -183,7 +183,18 @@
       padding: 1.25rem 1.25rem;
     }
 
+    .card h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .card p { color: var(--text-secondary); font-weight: 300; }
+    
+    .card b { color: var(--text-primary); }
 
     .code-block {
       background: var(--code-bg);
@@ -290,9 +301,18 @@
   </header>
 
   <div class="content">
+    
     <div class="card">
+      <h2><i class="fa-brands fa-apple"></i> macOS App</h2>
       <p>
-        In order to boot kebabOS, make sure that you are in the root directory
+        If you installed using the macOS installer, simply run <b>KebabGUI</b> from your <b>Applications</b> folder.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-terminal"></i> Terminal / CLI</h2>
+      <p>
+        In order to boot kebabOS manually, make sure that you are in the root directory
         (inside the <code>kebab-os</code> directory), then run:
       </p>
     </div>
